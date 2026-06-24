@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<!--
+  DIRECTION A — "Tour de contrôle"
+  Personnalité : sombre, terminal/cockpit, ultra-dense, codes couleur francs sur bord gauche.
+  Palette : bg #0d1117 / surface #161b22 / texte #e6edf3 / muted #7d8590
+           danger #f85149 / warn #d29922 / info #58a6ff / phase #bc8cff / ok #3fb950
+  Type : système, accents monospace pour les compteurs.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vigie — Direction A · Tour de contrôle</title>
+<style>
+  :root{
+    --bg:#0d1117; --surface:#161b22; --surface2:#1c2230; --line:#30363d;
+    --tx:#e6edf3; --muted:#7d8590;
+    --danger:#f85149; --warn:#d29922; --info:#58a6ff; --phase:#bc8cff; --ok:#3fb950;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:14px;line-height:1.4}
+  .wrap{max-width:1080px;margin:0 auto;padding:24px}
+  .rationale{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:20px}
+  .rationale b{color:var(--tx)}
+  header.app{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+  .brand{font-weight:700;font-size:18px;letter-spacing:.5px}
+  .brand .dot{color:var(--ok)}
+  .date{font-family:var(--mono);color:var(--muted);font-size:12.5px}
+  .sumbar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+  .chip{font-family:var(--mono);font-size:12px;padding:4px 9px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+  .chip b{color:var(--tx)}
+  .chip.d{border-color:#5b2222;color:#ffb3ad}
+  .chip.w{border-color:#5c4a17;color:#f1d18b}
+  h2.sec{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:22px 0 8px}
+  .row{display:grid;grid-template-columns:4px 150px 1fr auto;gap:14px;align-items:center;
+       background:var(--surface);border:1px solid var(--line);border-left:none;border-radius:6px;
+       padding:11px 14px 11px 0;margin-bottom:7px}
+  .bar{width:4px;align-self:stretch;border-radius:6px 0 0 6px;margin-right:0}
+  .row.danger .bar{background:var(--danger)} .row.warn .bar{background:var(--warn)}
+  .row.info .bar{background:var(--info)} .row.phase .bar{background:var(--phase)}
+  .who{padding-left:10px}
+  .who .proj{font-weight:600}
+  .who .client{font-size:12px;color:var(--muted)}
+  .sig{font-size:13px}
+  .sig .tag{font-family:var(--mono);font-size:11px;padding:2px 6px;border-radius:4px;margin-right:8px;vertical-align:middle}
+  .tag.danger{background:#3d1413;color:#ffb3ad}.tag.warn{background:#3a2e0c;color:#f1d18b}
+  .tag.info{background:#10243d;color:#9cc7ff}.tag.phase{background:#241a3d;color:#d9c2ff}
+  .age{font-family:var(--mono);color:var(--muted);font-size:12px}
+  .age b{color:var(--danger)}
+  .act{border:1px solid var(--line);background:var(--surface2);color:var(--tx);
+       font-size:12.5px;padding:7px 12px;border-radius:6px;cursor:pointer;white-space:nowrap}
+  .act:hover{border-color:var(--info);color:#fff}
+  .act.primary{background:#1f6feb22;border-color:#1f6feb;color:#79c0ff}
+  .empty{margin-top:26px;border:1px dashed var(--line);border-radius:8px;padding:22px;text-align:center;color:var(--muted)}
+  .empty .big{color:var(--ok);font-size:15px;font-weight:600;margin-bottom:4px}
+  footer{margin-top:26px;color:var(--muted);font-size:11.5px;font-family:var(--mono)}
+</style>
+<div class="wrap">
+  <div class="rationale">
+    <b>Direction A — Tour de contrôle.</b> Sombre, dense, à la Bloomberg/terminal. Chaque ligne est codée par un bord couleur, les compteurs en monospace se lisent au scan. Pensé pour absorber 8-12 alertes d'un coup d'œil sans scroller. Registre : outil d'opérateur, sérieux, rapide.
+  </div>
+
+  <header class="app">
+    <div class="brand">VIGIE<span class="dot">.</span></div>
+    <div class="date">mar. 23 juin · 08:14 · 25 projets actifs</div>
+  </header>
+
+  <div class="sumbar">
+    <span class="chip d"><b>3</b> à relancer</span>
+    <span class="chip w"><b>2</b> échéances</span>
+    <span class="chip"><b>1</b> attente client</span>
+    <span class="chip"><b>1</b> action de phase</span>
+  </div>
+
+  <h2 class="sec">À traiter ce matin</h2>
+
+  <div class="row danger"><div class="bar"></div>
+    <div class="who"><div class="proj">Refonte site</div><div class="client">Lumen Studio</div></div>
+    <div class="sig"><span class="tag danger">SILENCE</span>Pas de contact <span class="age">depuis <b>9 j</b> (cadence 7)</span></div>
+    <button class="act primary">J'ai contacté</button>
+  </div>
+
+  <div class="row info"><div class="bar"></div>
+    <div class="who"><div class="proj">Boutique Origan</div><div class="client">Origan SAS</div></div>
+    <div class="sig"><span class="tag info">ATTENTE</span>Le client doit tester le tunnel <span class="age">depuis <b>11 j</b></span></div>
+    <button class="act">Relancé</button>
+  </div>
+
+  <div class="row warn"><div class="bar"></div>
+    <div class="who"><div class="proj">Newsletter Aria</div><div class="client">Aria Médias</div></div>
+    <div class="sig"><span class="tag warn">ÉCHÉANCE</span>Envoi BAT <span class="age"><b>dépassée · -2 j</b></span></div>
+    <button class="act">Marquer fait</button>
+  </div>
+
+  <div class="row warn"><div class="bar"></div>
+    <div class="who"><div class="proj">App mobile RH</div><div class="client">Galado</div></div>
+    <div class="sig"><span class="tag warn">ÉCHÉANCE</span>Maquettes V2 <span class="age"><b>J-1</b></span></div>
+    <button class="act">Marquer fait</button>
+  </div>
+
+  <div class="row phase"><div class="bar"></div>
+    <div class="who"><div class="proj">Portail Néo</div><div class="client">Néo Conseil</div></div>
+    <div class="sig"><span class="tag phase">PHASE · LIVRAISON</span>« Poser un délai de retour » non fait</div>
+    <button class="act">Marquer fait</button>
+  </div>
+
+  <div class="empty">
+    <div class="big">↑ Voilà tout. Traite-les et le cockpit est vide.</div>
+    Quand rien ne remonte, cet écran affiche juste « Rien à signaler — bonne journée ».
+  </div>
+
+  <footer>VIGIE — surveille, n'ordonnance pas. Aucune planification ici.</footer>
+</div>
+</html>

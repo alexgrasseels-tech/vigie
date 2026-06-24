@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="fr">
+<!--
+  DIRECTION C — "Cartes groupées" (clair/sombre AUTO via prefers-color-scheme)
+  Personnalité : signaux regroupés par type en sections, cartes structurées, accent teal.
+  Un peu plus de respiration que A/B, mais reste pro et dense. Démontre le thème auto.
+  Light: bg #f4f5f7 surface #fff | Dark: bg #101418 surface #181d23
+  accent teal #0d9488 / danger #e5484d / warn #d9870b / info #3b82f6 / phase #8b5cf6
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vigie — Direction C · Cartes groupées</title>
+<style>
+  :root{
+    --bg:#f4f5f7;--surface:#fff;--line:#e7e9ee;--tx:#1a1d21;--muted:#697586;--soft:#f0f2f5;
+    --accent:#0d9488;--danger:#e5484d;--warn:#d9870b;--info:#3b82f6;--phase:#8b5cf6;--ok:#0d9488;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#101418;--surface:#181d23;--line:#262d36;--tx:#e7ecf2;--muted:#8b97a6;--soft:#1f2630;
+          --accent:#2dd4bf;--danger:#ff6369;--warn:#f1a83a;--info:#60a5fa;--phase:#a78bfa;--ok:#2dd4bf;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:14px}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px}
+  .rationale{font-size:12.5px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:18px}
+  .rationale b{color:var(--tx)}
+  .themehint{font-size:11px;color:var(--accent);margin-bottom:18px}
+  header.app{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .brand{font-weight:800;font-size:19px}.brand span{color:var(--accent)}
+  .date{color:var(--muted);font-size:13px}
+  .group{margin-bottom:20px}
+  .gh{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+  .gh .dot{width:9px;height:9px;border-radius:50%}
+  .gh h2{margin:0;font-size:13px;font-weight:700}
+  .gh .c{font-size:12px;color:var(--muted);background:var(--soft);padding:1px 8px;border-radius:999px}
+  .dot.d{background:var(--danger)}.dot.w{background:var(--warn)}.dot.i{background:var(--info)}.dot.p{background:var(--phase)}
+  .card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-bottom:8px}
+  .card .body{flex:1}
+  .card .proj{font-weight:600}
+  .card .client{font-size:12px;color:var(--muted)}
+  .card .meta{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .card .meta b{color:var(--danger)}
+  .btn{border:1px solid var(--line);background:var(--soft);color:var(--tx);font-size:13px;font-weight:500;padding:8px 13px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#04201d}
+  @media (prefers-color-scheme:dark){.btn.primary{color:#062c28}}
+  .done{text-align:center;color:var(--ok);font-weight:600;font-size:13px;margin-top:22px}
+</style>
+<div class="wrap">
+  <div class="rationale">
+    <b>Direction C — Cartes groupées.</b> Les signaux sont regroupés par type (relances, échéances, attentes, phase), chaque carte est structurée et respire un peu plus. Accent teal discret. Bon compromis densité / lisibilité quand tu veux comprendre la <i>nature</i> des alertes, pas juste les compter.
+  </div>
+  <div class="themehint">◐ Cette direction bascule automatiquement clair / sombre selon ton système — change le thème de l'OS pour voir.</div>
+
+  <header class="app">
+    <div class="brand">Vigie<span>.</span></div>
+    <div class="date">Mardi 23 juin · 25 projets actifs</div>
+  </header>
+
+  <div class="group">
+    <div class="gh"><span class="dot d"></span><h2>À relancer</h2><span class="c">1</span></div>
+    <div class="card">
+      <div class="body"><div class="proj">Refonte site <span class="client">· Lumen Studio</span></div>
+        <div class="meta">Silence — pas de contact depuis <b>9 jours</b> (cadence 7)</div></div>
+      <button class="btn primary">J'ai contacté</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="gh"><span class="dot w"></span><h2>Échéances</h2><span class="c">2</span></div>
+    <div class="card">
+      <div class="body"><div class="proj">Newsletter Aria <span class="client">· Aria Médias</span></div>
+        <div class="meta">« Envoi BAT » <b>dépassée de 2 jours</b></div></div>
+      <button class="btn">Marquer fait</button>
+    </div>
+    <div class="card">
+      <div class="body"><div class="proj">App mobile RH <span class="client">· Galado</span></div>
+        <div class="meta">« Maquettes V2 » — échéance demain (J-1)</div></div>
+      <button class="btn">Marquer fait</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="gh"><span class="dot i"></span><h2>Attente client</h2><span class="c">1</span></div>
+    <div class="card">
+      <div class="body"><div class="proj">Boutique Origan <span class="client">· Origan SAS</span></div>
+        <div class="meta">Doit tester le tunnel — en attente depuis <b>11 jours</b></div></div>
+      <button class="btn">Relancé</button>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="gh"><span class="dot p"></span><h2>Action de phase</h2><span class="c">1</span></div>
+    <div class="card">
+      <div class="body"><div class="proj">Portail Néo <span class="client">· Néo Conseil</span></div>
+        <div class="meta">Phase Livraison — « Poser un délai de retour » non fait</div></div>
+      <button class="btn">Marquer fait</button>
+    </div>
+  </div>
+
+  <div class="done">✓ 5 éléments — traite-les et le cockpit est vidé pour aujourd'hui.</div>
+</div>
+</html>

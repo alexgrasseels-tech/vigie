@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+<!--
+  KEY SCREEN — Fiche Projet (direction "Tableau clair")
+  Surface où vivent : champs projet, KPI budget, échéances, attentes client, phase + actions attendues, notes.
+  Tokens DESIGN.md : signalSilence #dc2626 / signalEcheance #ea8a00 / signalAttente #2563eb / signalPhase #7c3aed
+                     primary #4f46e5 / ok #059669
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vigie — Fiche Projet</title>
+<style>
+  :root{
+    --bg:#f6f7f9;--surface:#fff;--alt:#fafbfc;--line:#e6e8eb;--tx:#1c2024;--muted:#6b7280;
+    --primary:#4f46e5;--danger:#dc2626;--warn:#ea8a00;--info:#2563eb;--phase:#7c3aed;--ok:#059669;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:14px}
+  .wrap{max-width:1040px;margin:0 auto;padding:24px}
+  .crumb{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+  .crumb a{color:var(--info);text-decoration:none}
+  .head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px}
+  .title h1{margin:0 0 4px;font-size:21px;font-weight:800;letter-spacing:-.3px}
+  .title .sub{color:var(--muted);font-size:13px}
+  .phasepill{font-size:12px;font-weight:600;color:#5b21a8;background:#f1e9fe;padding:5px 11px;border-radius:999px}
+  .cta{border:1px solid var(--line);background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600;font-size:13px;padding:9px 14px;border-radius:8px;cursor:pointer;white-space:nowrap}
+  .grid{display:grid;grid-template-columns:1fr 320px;gap:16px}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:16px;overflow:hidden}
+  .ph{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-bottom:1px solid var(--line)}
+  .ph h2{margin:0;font-size:13px;font-weight:600}
+  .ph .add{font-size:12.5px;color:var(--info);cursor:pointer}
+  .row{display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:center;padding:11px 15px;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .badge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;text-align:center;white-space:nowrap}
+  .b-d{background:#fde8e8;color:var(--danger)}.b-w{background:#fdf0dd;color:#b46a00}
+  .b-i{background:#e6effe;color:var(--info)}.b-p{background:#f1e9fe;color:var(--phase)}.b-ok{background:#e3f5ee;color:var(--ok)}
+  .row .d{font-size:13px}.row .m{font-size:12px;color:var(--muted)}
+  .row .m b{color:var(--danger)}
+  .mini{border:1px solid var(--line);background:#fff;font-size:12.5px;padding:6px 11px;border-radius:7px;cursor:pointer;white-space:nowrap}
+  /* budget */
+  .budget{padding:15px}
+  .budget .nums{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+  .budget .big{font-size:20px;font-weight:700}
+  .budget .pct{font-weight:700;color:var(--ok)}
+  .bar{height:8px;background:#eef0f3;border-radius:999px;overflow:hidden}
+  .bar > i{display:block;height:100%;width:28%;background:var(--ok);border-radius:999px}
+  .budget .sub{font-size:12px;color:var(--muted);margin-top:8px}
+  /* side */
+  .field{padding:11px 15px;border-bottom:1px solid var(--line);font-size:13px}
+  .field:last-child{border-bottom:none}
+  .field .k{color:var(--muted);font-size:12px;margin-bottom:2px}
+  .notes{padding:13px 15px;font-size:13px;color:#3f4651;line-height:1.5}
+  .phaseactions{padding:6px 0}
+  .pa{display:flex;align-items:center;gap:9px;padding:9px 15px;font-size:13px}
+  .pa .chk{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--line);flex:none}
+  .pa.todo .chk{border-color:var(--phase)}
+  .pa.done{color:var(--muted);text-decoration:line-through}
+  .pa.done .chk{background:var(--ok);border-color:var(--ok)}
+  .pa .flag{margin-left:auto;font-size:11px;font-weight:600;color:var(--phase);background:#f1e9fe;padding:2px 7px;border-radius:999px}
+</style>
+<div class="wrap">
+  <div class="crumb"><a>Projets</a> › Refonte site</div>
+
+  <div class="head">
+    <div class="title">
+      <h1>Refonte site</h1>
+      <div class="sub">Lumen Studio · actif · dernier contact il y a <b style="color:var(--danger)">9 j</b> (cadence 7)</div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="phasepill">Phase · Développement</span>
+      <button class="cta">J'ai contacté</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- main column -->
+    <div>
+      <div class="panel">
+        <div class="budget">
+          <div class="nums"><div><span class="big">3 400 €</span> <span style="color:var(--muted)">/ 12 000 €</span></div><div class="pct">28 %</div></div>
+          <div class="bar"><i></i></div>
+          <div class="sub">Budget consommé — 8 600 € restants. KPI informatif (ne déclenche pas d'alerte).</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><h2>Échéances</h2><span class="add">+ Ajouter</span></div>
+        <div class="row"><span class="badge b-w">J-1</span><div><div class="d">Maquettes V2</div><div class="m">demain · 24 juin</div></div><button class="mini">Marquer fait</button></div>
+        <div class="row"><span class="badge b-ok">à venir</span><div><div class="d">Recette client</div><div class="m">dans 12 j · 5 juil.</div></div><button class="mini">Marquer fait</button></div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><h2>Attentes client</h2><span class="add">+ Ajouter</span></div>
+        <div class="row"><span class="badge b-i">Attente</span><div><div class="d">Doit fournir les visuels HD</div><div class="m">en attente depuis <b>4 j</b> (seuil 7)</div></div><button class="mini">Relancé</button></div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><h2>Notes</h2><span class="add">Éditer</span></div>
+        <div class="notes">Client réactif mais valide lentement. Préfère les points le mardi. Attention : budget serré, cadrer les demandes hors-scope.</div>
+      </div>
+    </div>
+
+    <!-- side column -->
+    <div>
+      <div class="panel">
+        <div class="ph"><h2>Détails</h2></div>
+        <div class="field"><div class="k">Client</div>Lumen Studio</div>
+        <div class="field"><div class="k">Statut</div>Actif</div>
+        <div class="field"><div class="k">Cadence du client</div>7 jours</div>
+        <div class="field"><div class="k">Dernier contact</div>14 juin (il y a 9 j)</div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><h2>Actions de la phase · Développement</h2></div>
+        <div class="phaseactions">
+          <div class="pa done"><span class="chk"></span>Cadrer le périmètre technique</div>
+          <div class="pa done"><span class="chk"></span>Valider la maquette V1</div>
+          <div class="pa todo"><span class="chk"></span>Organiser la recette interne <span class="flag">à faire</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</html>
