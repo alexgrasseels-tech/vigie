@@ -77,13 +77,18 @@ export async function changerPhase(formData: FormData): Promise<void> {
   revalidatePath('/')
 }
 
-export async function clorProjet(formData: FormData): Promise<void> {
+const STATUTS = ['actif', 'en_pause', 'termine']
+
+// Transition de statut générique (Clore / Mettre en pause / Réactiver / Rouvrir).
+// Reste sur la fiche (revalidate, pas de redirect) pour voir le nouvel état.
+export async function changerStatut(formData: FormData): Promise<void> {
   await requireUser()
   const id = String(formData.get('id') ?? '')
+  const statut = String(formData.get('statut') ?? '')
+  if (!STATUTS.includes(statut)) return
   const supabase = await createClient()
-  await supabase.from('projects').update({ statut: 'termine' }).eq('id', id)
+  await supabase.from('projects').update({ statut }).eq('id', id)
   revalidatePath(`/projets/${id}`)
   revalidatePath('/projets')
   revalidatePath('/')
-  redirect(`/projets/${id}`)
 }

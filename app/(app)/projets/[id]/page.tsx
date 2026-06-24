@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { ProjectForm } from '../_components/project-form'
-import { editerProjet, changerPhase, clorProjet } from '../actions'
+import { editerProjet, changerPhase, changerStatut } from '../actions'
 import { PHASES } from '../constants'
+import { Button } from '@/components/ui/button'
 import {
   jaiContacte,
   marquerEcheanceFaite,
@@ -47,6 +48,11 @@ const SANTE_LABEL: Record<string, string> = {
   on_track: '🟢 On track',
   a_risque: '🟡 À risque',
   en_danger: '🔴 En danger',
+}
+const STATUT_LABEL: Record<string, string> = {
+  actif: 'Actif',
+  en_pause: 'En pause',
+  termine: 'Terminé',
 }
 function scoreRisque(p: {
   risk_planning?: number
@@ -217,6 +223,83 @@ export default async function ProjetFichePage({ params }: { params: Promise<{ id
             Appliquer
           </button>
         </form>
+      </div>
+
+      {/* Éditer le projet + statut */}
+      <div className="rounded-panel border border-line bg-surface p-5">
+        <h2 className="mb-3 text-sm font-semibold">Éditer le projet</h2>
+        <ProjectForm
+          action={editerProjet}
+          submitLabel="Enregistrer"
+          clients={clients ?? []}
+          defaults={{
+            id: p.id,
+            nom: p.nom,
+            client_id: p.client_id,
+            type: p.type,
+            contact_nom: p.contact_nom,
+            contact_email: p.contact_email,
+            sante: p.sante,
+            risk_planning: p.risk_planning,
+            risk_budget: p.risk_budget,
+            risk_ressources: p.risk_ressources,
+            release_date: p.release_date,
+            gantt_link: p.gantt_link,
+            notes: p.notes,
+          }}
+        />
+        <div className="mt-4 border-t border-line pt-4">
+          <p className="mb-2 text-xs text-muted">
+            Statut : <b>{STATUT_LABEL[p.statut] ?? p.statut}</b>
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {p.statut === 'actif' && (
+              <>
+                <form action={changerStatut}>
+                  <input type="hidden" name="id" value={p.id} />
+                  <input type="hidden" name="statut" value="en_pause" />
+                  <Button type="submit" variant="outline" size="sm">
+                    Mettre en pause
+                  </Button>
+                </form>
+                <form action={changerStatut}>
+                  <input type="hidden" name="id" value={p.id} />
+                  <input type="hidden" name="statut" value="termine" />
+                  <Button type="submit" variant="secondary" size="sm">
+                    Clore le projet
+                  </Button>
+                </form>
+              </>
+            )}
+            {p.statut === 'en_pause' && (
+              <>
+                <form action={changerStatut}>
+                  <input type="hidden" name="id" value={p.id} />
+                  <input type="hidden" name="statut" value="actif" />
+                  <Button type="submit" variant="outline" size="sm">
+                    Réactiver
+                  </Button>
+                </form>
+                <form action={changerStatut}>
+                  <input type="hidden" name="id" value={p.id} />
+                  <input type="hidden" name="statut" value="termine" />
+                  <Button type="submit" variant="secondary" size="sm">
+                    Clore le projet
+                  </Button>
+                </form>
+              </>
+            )}
+            {p.statut === 'termine' && (
+              <form action={changerStatut}>
+                <input type="hidden" name="id" value={p.id} />
+                <input type="hidden" name="statut" value="actif" />
+                <Button type="submit" variant="outline" size="sm">
+                  Rouvrir le projet
+                </Button>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* Budget */}
@@ -444,39 +527,6 @@ export default async function ProjetFichePage({ params }: { params: Promise<{ id
           </ul>
         ) : (
           <p className="text-sm text-muted">Aucun historique. Ajoute un premier élément ci-dessus.</p>
-        )}
-      </div>
-
-      {/* Édition + clore */}
-      <div className="rounded-panel border border-line bg-surface p-5">
-        <h2 className="mb-3 text-sm font-semibold">Éditer le projet</h2>
-        <ProjectForm
-          action={editerProjet}
-          submitLabel="Enregistrer"
-          clients={clients ?? []}
-          defaults={{
-            id: p.id,
-            nom: p.nom,
-            client_id: p.client_id,
-            type: p.type,
-            contact_nom: p.contact_nom,
-            contact_email: p.contact_email,
-            sante: p.sante,
-            risk_planning: p.risk_planning,
-            risk_budget: p.risk_budget,
-            risk_ressources: p.risk_ressources,
-            release_date: p.release_date,
-            gantt_link: p.gantt_link,
-            notes: p.notes,
-          }}
-        />
-        {p.statut === 'actif' && (
-          <form action={clorProjet} className="mt-4 border-t border-line pt-4">
-            <input type="hidden" name="id" value={p.id} />
-            <button className="min-h-9 rounded-control border border-line px-3 py-2 text-sm text-muted hover:bg-surface-alt">
-              Clore le projet
-            </button>
-          </form>
         )}
       </div>
 
