@@ -6,13 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 
 type Action = (prev: FormState, formData: FormData) => Promise<FormState>
 type Item = { id: string; nom: string }
@@ -28,6 +21,8 @@ const RISKS: [string, string][] = [
   ['risk_budget', '💰 Budget'],
   ['risk_ressources', '👥 Ressources'],
 ]
+const selectCls =
+  'h-9 w-full rounded-md border border-line bg-surface-alt px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/30'
 
 export type ProjectDefaults = {
   id?: string
@@ -79,9 +74,6 @@ export function ProjectForm({
   defaults?: ProjectDefaults
 }) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(action, {})
-  const [clientId, setClientId] = useState(defaults?.client_id ?? '')
-  const [type, setType] = useState(defaults?.type ?? '')
-  const [sante, setSante] = useState(defaults?.sante ?? 'on_track')
   const [rp, setRp] = useState(defaults?.risk_planning ?? 1)
   const [rb, setRb] = useState(defaults?.risk_budget ?? 1)
   const [rr, setRr] = useState(defaults?.risk_ressources ?? 1)
@@ -96,9 +88,6 @@ export function ProjectForm({
   return (
     <form action={formAction} className="space-y-4" noValidate>
       {defaults?.id && <input type="hidden" name="id" value={defaults.id} />}
-      <input type="hidden" name="client_id" value={clientId} />
-      <input type="hidden" name="type" value={type} />
-      <input type="hidden" name="sante" value={sante} />
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
@@ -106,37 +95,31 @@ export function ProjectForm({
           <Input id="nom" name="nom" defaultValue={defaults?.nom ?? ''} required />
         </div>
         <div className="space-y-1.5">
-          <Label>Client</Label>
-          <Select value={clientId} onValueChange={(v) => setClientId(v ?? '')}>
-            <SelectTrigger>
-              <SelectValue placeholder="Choisir…" />
-            </SelectTrigger>
-            <SelectContent>
-              {clients.map((c) => (
-                <SelectItem key={c.id} value={c.id}>
-                  {c.nom}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="client_id">Client</Label>
+          <select id="client_id" name="client_id" defaultValue={defaults?.client_id ?? ''} required className={selectCls}>
+            <option value="" disabled>
+              Choisir…
+            </option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.nom}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-1.5">
-          <Label>Type</Label>
-          <Select value={type} onValueChange={(v) => setType(v ?? '')}>
-            <SelectTrigger>
-              <SelectValue placeholder="—" />
-            </SelectTrigger>
-            <SelectContent>
-              {TYPES.map((t) => (
-                <SelectItem key={t} value={t}>
-                  {t}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="type">Type</Label>
+          <select id="type" name="type" defaultValue={defaults?.type ?? ''} className={selectCls}>
+            <option value="">—</option>
+            {TYPES.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="contact_nom">Contact</Label>
@@ -150,19 +133,14 @@ export function ProjectForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label>Santé</Label>
-          <Select value={sante} onValueChange={(v) => setSante(v ?? '')}>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SANTE.map(([v, l]) => (
-                <SelectItem key={v} value={v}>
-                  {l}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label htmlFor="sante">Santé</Label>
+          <select id="sante" name="sante" defaultValue={defaults?.sante ?? 'on_track'} className={selectCls}>
+            {SANTE.map(([v, l]) => (
+              <option key={v} value={v}>
+                {l}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="flex items-end justify-end">
           <span className="text-sm text-muted">

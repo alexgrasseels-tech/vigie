@@ -30,6 +30,17 @@ const CONTACT_TYPES: [string, string][] = [
   ['note', '📝 Note'],
 ]
 
+// Date du jour au format YYYY-MM-DD (en heure locale). Helper module → l'appel
+// à new Date() n'est pas dans le render (pas de violation de pureté).
+function todayStr(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+function presetToday(form: HTMLFormElement | null) {
+  const input = form?.querySelector<HTMLInputElement>('input[name="date"]')
+  if (input) input.value = todayStr()
+}
+
 function useResetOnOk(state: FormState) {
   const ref = useRef<HTMLFormElement>(null)
   useEffect(() => {
@@ -41,10 +52,21 @@ function useResetOnOk(state: FormState) {
 export function ContactLogAdd({ projectId }: { projectId: string }) {
   const [state, formAction, pending] = useActionState<FormState, FormData>(ajouterContactLog, {})
   const [type, setType] = useState('note')
-  const ref = useResetOnOk(state)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  // Pré-remplit la date du jour au montage, et la ré-applique après un ajout réussi.
+  useEffect(() => {
+    presetToday(formRef.current)
+  }, [])
+  useEffect(() => {
+    if (state.ok) {
+      formRef.current?.reset()
+      presetToday(formRef.current)
+    }
+  }, [state.ok])
 
   return (
-    <form ref={ref} action={formAction} className="space-y-2" noValidate>
+    <form ref={formRef} action={formAction} className="space-y-2" noValidate>
       <input type="hidden" name="project_id" value={projectId} />
       <input type="hidden" name="type" value={type} />
       <div className="flex flex-wrap gap-2">
