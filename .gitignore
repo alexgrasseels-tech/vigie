@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# BMAD tooling (installation des skills/agents — régénérable, hors app)
+.claude/
+_bmad/
+# (on garde _bmad-output/ : brief, PRD, UX, architecture, epics)
